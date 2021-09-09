@@ -45,7 +45,7 @@ public class MqttClient {
         options = new MqttConnectOptions();
         //设置自动重连
         options.setAutomaticReconnect(true);
-        // 缓存,
+        // 缓存
         options.setCleanSession(true);
         // 设置超时时间，单位：秒
         options.setConnectionTimeout(15);
@@ -94,6 +94,14 @@ public class MqttClient {
 
     }
 
+    public void unsubscribeMQTT(String topic, IMqttActionListener callBack){
+        try {
+            mMqttClient.unsubscribe(topic, null, callBack);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendMsg(String topic, String content, int qos) throws MqttException {
 
         MqttMessage msg=new MqttMessage();
@@ -114,6 +122,8 @@ public class MqttClient {
             }
         });
     }
+
+
 
     public void addMqttListener(MqttListener mqttListener){
         this.mqttListener = mqttListener;

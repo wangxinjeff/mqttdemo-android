@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements MqttClient.MqttLi
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String responseBody = response.body().string();
+                    String responseBody = response.body().string();
                 if (response.code() == 200) {
                     try {
                         JSONObject result = new JSONObject(responseBody);
@@ -136,6 +136,13 @@ public class MainActivity extends AppCompatActivity implements MqttClient.MqttLi
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, responseBody, Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }
         });
@@ -151,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements MqttClient.MqttLi
             sendToast("Qos input error");
             return;
         }
-        client.subscribeMQTT(etTopic.getText().toString(), Integer.parseInt(etQos.getText().toString()), new IMqttActionListener() {
+        client.subscribeMQTT(topic, Integer.parseInt(qos), new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
                 Log.e(TAG, "subscribe success");
@@ -162,6 +169,29 @@ public class MainActivity extends AppCompatActivity implements MqttClient.MqttLi
             public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                 Log.e(TAG, "subscribe failure");
                 sendToast("subscribe failure");
+            }
+        });
+    }
+
+    public void unsubClick(View view){
+        topic = etTopic.getText().toString();
+        if (TextUtils.isEmpty(topic)) {
+            sendToast("Topic is null");
+            return;
+        }
+
+        client.unsubscribeMQTT(topic, new IMqttActionListener(){
+
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                Log.e(TAG, "unsubscribe success");
+                sendToast("unsubscribe success");
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                Log.e(TAG, "unsubscribe failure");
+                sendToast("unsubscribe failure");
             }
         });
     }

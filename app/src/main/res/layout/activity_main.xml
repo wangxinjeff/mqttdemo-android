@@ -74,6 +74,16 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消订阅"
+            android:onClick="unsubClick"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,10 +93,14 @@
             android:layout_gravity="center_horizontal"
             />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <TextView
             android:id="@+id/view_msg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"/>
+        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>
