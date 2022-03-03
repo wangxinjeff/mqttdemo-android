@@ -36,10 +36,8 @@ public class MqttClient {
     private static final String TAG = "MqttClient";
 
     //连接到服务器
-    public void connectMQTT(String appId, String mqttUri, String mqttPort,  String userName, String token, IMqttActionListener callBack) {
-        //连接时使用的clientId, 必须唯一, 一般加时间戳
-        String clientId = String.format("%s@%s", userName, appId);
-        mMqttClient = new MqttAndroidClient(context, String.format("tcp://%s:%s", mqttUri, mqttPort), clientId);
+    public void connectMQTT(String host, String port, String clientId,  String userName, String token, IMqttActionListener callBack) {
+        mMqttClient = new MqttAndroidClient(context, String.format("tcp://%s:%s", host, port), clientId);
         //连接参数
         MqttConnectOptions options;
         options = new MqttConnectOptions();
@@ -48,9 +46,9 @@ public class MqttClient {
         // 缓存
         options.setCleanSession(true);
         // 设置超时时间，单位：秒
-        options.setConnectionTimeout(15);
+        options.setConnectionTimeout(60);
         // 心跳包发送间隔，单位：秒
-        options.setKeepAliveInterval(15);
+        options.setKeepAliveInterval(45);
         // 用户名
         options.setUserName(userName);
         // 密码
